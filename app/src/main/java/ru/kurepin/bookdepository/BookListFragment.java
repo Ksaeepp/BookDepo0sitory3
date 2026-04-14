@@ -13,6 +13,7 @@ import java.text.SimpleDateFormat;
 import java.util.List;
 import java.util.Locale;
 import android.content.Intent;
+
 public class BookListFragment extends Fragment {
 
     private RecyclerView mBookRecyclerView;
@@ -62,15 +63,19 @@ public class BookListFragment extends Fragment {
 
         @Override
         public void onClick(View v) {
-            Intent intent = BookActivity.newIntent(getActivity(), mBook.getId());
+
+            Intent intent = BookPagerActivity.newIntent(getActivity(), mBook.getId());
             startActivity(intent);
         }
+
     }
+
     @Override
     public void onResume() {
         super.onResume();
         updateUI();
     }
+
     private class BookAdapter extends RecyclerView.Adapter<BookHolder> {
         private List<Book> mBooks;
 
