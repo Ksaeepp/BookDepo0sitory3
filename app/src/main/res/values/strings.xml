@@ -1,0 +1,4 @@
+<resources>
+    <string name="app_name">BookDepository</string>
+    <string name="book_title_hint">Введите название книги</string>
+</resources>

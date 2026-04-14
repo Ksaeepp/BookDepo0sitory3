@@ -1,0 +1,6 @@
+<resources xmlns:tools="http://schemas.android.com/tools">
+<style name="Base.Theme.BookDepository" parent="Theme.MaterialComponents.DayNight.NoActionBar">
+    <!-- Customize your theme here. -->
+</style>
+<style name="Theme.BookDepository" parent="Base.Theme.BookDepository" />
+</resources>

@@ -1,0 +1,88 @@
+package ru.kurepin.bookdepository;
+
+import android.os.Bundle;
+import android.text.Editable;
+import android.text.TextWatcher;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.Button;
+import android.widget.CheckBox;
+import android.widget.CompoundButton;
+import android.widget.EditText;
+import android.widget.TextView;
+import androidx.fragment.app.Fragment;
+import java.text.SimpleDateFormat;
+import java.util.Locale;
+import java.util.UUID;
+
+public class BookFragment extends Fragment {
+
+    private static final String ARG_BOOK_ID = "book_id";
+    private Book mBook;
+    private EditText mTitleField;
+    private CheckBox mReadedCheckBox;
+    private TextView mDateTextView;
+
+    public static BookFragment newInstance(UUID bookId) {
+        Bundle args = new Bundle();
+        args.putSerializable(ARG_BOOK_ID, bookId);
+        BookFragment fragment = new BookFragment();
+        fragment.setArguments(args);
+        return fragment;
+    }
+
+    @Override
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        UUID bookId = (UUID) getArguments().getSerializable(ARG_BOOK_ID);
+        mBook = BookLab.get(getActivity()).getBook(bookId);
+    }
+
+    @Override
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+        View v = inflater.inflate(R.layout.fragment_book, container, false);
+
+        // Настройка поля названия
+        mTitleField = v.findViewById(R.id.book_title);
+        mTitleField.setText(mBook.getTitle());
+        mTitleField.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {}
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                mBook.setTitle(s.toString());
+            }
+            @Override
+            public void afterTextChanged(Editable s) {}
+        });
+
+        // Настройка отображения даты
+        mDateTextView = v.findViewById(R.id.book_date);
+        if (mDateTextView != null) {
+            SimpleDateFormat sdf = new SimpleDateFormat("dd.MM.yyyy", Locale.getDefault());
+            mDateTextView.setText(sdf.format(mBook.getDate()));
+        }
+
+        // Настройка чекбокса "Прочитана"
+        mReadedCheckBox = v.findViewById(R.id.book_readed);
+        mReadedCheckBox.setChecked(mBook.isReaded());
+        mReadedCheckBox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                mBook.setReaded(isChecked);
+            }
+        });
+
+        // Кнопка "Назад" – своя, вынесенная вниз макета
+        Button backButton = v.findViewById(R.id.back_button);
+        backButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                getActivity().onBackPressed(); // возврат к списку
+            }
+        });
+
+        return v;
+    }
+}
