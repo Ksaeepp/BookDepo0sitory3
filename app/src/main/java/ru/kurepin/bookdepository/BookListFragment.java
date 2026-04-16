@@ -41,6 +41,7 @@ public class BookListFragment extends Fragment {
             subtitleItem.setTitle(R.string.show_subtitle);
         }
     }
+
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         int itemId = item.getItemId();
@@ -69,6 +70,7 @@ public class BookListFragment extends Fragment {
         return view;
     }
 
+    // ========== ШАГ 8: ОБНОВЛЁННЫЙ updateUI() ==========
     private void updateUI() {
         BookLab bookLab = BookLab.get(getActivity());
         List<Book> books = bookLab.getBooks();
@@ -76,11 +78,11 @@ public class BookListFragment extends Fragment {
             mAdapter = new BookAdapter(books);
             mBookRecyclerView.setAdapter(mAdapter);
         } else {
-            mAdapter.setBooks(books);
-            mAdapter.notifyDataSetChanged();
+            mAdapter.setBooks(books);   // используем новый метод setBooks
         }
         updateSubtitle();
     }
+    // ========== КОНЕЦ ШАГА 8 ==========
 
     private void updateSubtitle() {
         BookLab bookLab = BookLab.get(getActivity());
@@ -93,11 +95,7 @@ public class BookListFragment extends Fragment {
         activity.getSupportActionBar().setSubtitle(subtitle);
     }
 
-    @Override
-    public void onResume() {
-        super.onResume();
-        updateUI();
-    }
+    // ========== ШАГ 9 ПОКА НЕ ДЕЛАЕМ (onResume ОТСУТСТВУЕТ) ==========
 
     private class BookHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
         private Book mBook;
@@ -135,9 +133,12 @@ public class BookListFragment extends Fragment {
             mBooks = books;
         }
 
+
         public void setBooks(List<Book> books) {
             mBooks = books;
+            notifyDataSetChanged();
         }
+
 
         @Override
         public BookHolder onCreateViewHolder(ViewGroup parent, int viewType) {
@@ -155,5 +156,10 @@ public class BookListFragment extends Fragment {
         public int getItemCount() {
             return mBooks.size();
         }
+    }
+    @Override
+    public void onResume() {
+        super.onResume();
+        updateUI();
     }
 }

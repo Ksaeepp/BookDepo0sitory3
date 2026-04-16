@@ -9,9 +9,16 @@ public class Book {
     private Date mDate;
     private boolean mReaded;
 
+
     public Book() {
-        mId = UUID.randomUUID();
-        mDate = new Date(); // текущая дата
+        this(UUID.randomUUID());
+    }
+
+
+    public Book(UUID id) {
+        mId = id;
+        mDate = new Date();
+        mTitle = "";
     }
 
     public UUID getId() {

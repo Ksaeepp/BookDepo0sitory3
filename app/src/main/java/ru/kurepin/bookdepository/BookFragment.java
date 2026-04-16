@@ -18,7 +18,9 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Locale;
 import java.util.UUID;
-
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 public class BookFragment extends Fragment {
 
     private static final String ARG_BOOK_ID = "book_id";
@@ -42,10 +44,11 @@ public class BookFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        setHasOptionsMenu(true);
+
         UUID bookId = (UUID) getArguments().getSerializable(ARG_BOOK_ID);
         mBook = BookLab.get(getActivity()).getBook(bookId);
     }
-
 
     private void updateDate() {
         SimpleDateFormat sdf = new SimpleDateFormat("dd.MM.yyyy", Locale.getDefault());
@@ -110,4 +113,26 @@ public class BookFragment extends Fragment {
 
         return v;
     }
+
+    @Override
+    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+        super.onCreateOptionsMenu(menu, inflater);
+        inflater.inflate(R.menu.fragment_book, menu);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        if (item.getItemId() == R.id.menu_item_delete_book) {
+            BookLab.get(getActivity()).deleteBook(mBook);
+            getActivity().finish();
+            return true;
+        }
+        return super.onOptionsItemSelected(item);
+    }
+    @Override
+    public void onPause() {
+        super.onPause();
+        BookLab.get(getActivity()).updateBook(mBook);
+    }
+
 }
