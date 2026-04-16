@@ -46,4 +46,7 @@ public class BookLab {
         }
         return null;
     }
+    public void addBook(Book book) {
+        mBooks.add(book);
+    }
 }

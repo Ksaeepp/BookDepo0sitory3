@@ -1,6 +1,9 @@
 <resources>
     <string name="app_name">BookDepository</string>
-    <string name="book_title_hint">Введите название книги</string>
     <string name="book_readed_label">Прочтена?</string>
     <string name="date_picker_title">Дата начала прочтения:</string>
+    <string name="new_book">Новая книга</string>
+    <string name="show_subtitle">Показать подзаголовок</string>
+    <string name="hide_subtitle">Скрыть подзаголовок</string>
+    <string name="subtitle_format">%1$d книг</string>
 </resources>

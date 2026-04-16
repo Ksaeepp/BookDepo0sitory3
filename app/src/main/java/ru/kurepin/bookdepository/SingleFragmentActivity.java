@@ -1,12 +1,11 @@
 package ru.kurepin.bookdepository;
 
 import android.os.Bundle;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.widget.Toolbar;
+import androidx.appcompat.app.AppCompatActivity;  // ШАГ 2: импорт AppCompatActivity вместо FragmentActivity
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 
-public abstract class SingleFragmentActivity extends AppCompatActivity {
+public abstract class SingleFragmentActivity extends AppCompatActivity { // ШАГ 2: extends AppCompatActivity
 
     protected abstract Fragment createFragment();
 
@@ -14,14 +13,6 @@ public abstract class SingleFragmentActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_fragment);
-
-        Toolbar toolbar = findViewById(R.id.toolbar);
-        setSupportActionBar(toolbar); // теперь работает, так как тема без ActionBar
-
-        // Остальной код (фрагмент)...
-
-        // При необходимости можно показать кнопку "Назад" только в детальной активности
-        // но на главной активности её не будет
 
         FragmentManager fm = getSupportFragmentManager();
         Fragment fragment = fm.findFragmentById(R.id.fragment_container);
