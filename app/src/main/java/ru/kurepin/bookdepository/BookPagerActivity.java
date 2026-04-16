@@ -3,7 +3,7 @@ package ru.kurepin.bookdepository;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
-import androidx.appcompat.app.AppCompatActivity;  // ШАГ 2: импорт AppCompatActivity вместо FragmentActivity
+import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentStatePagerAdapter;
@@ -11,7 +11,7 @@ import androidx.viewpager.widget.ViewPager;
 import java.util.List;
 import java.util.UUID;
 
-public class BookPagerActivity extends AppCompatActivity { // ШАГ 2: extends AppCompatActivity
+public class BookPagerActivity extends AppCompatActivity {
 
     private static final String EXTRA_BOOK_ID = "ru.kurepin.bookdepository.book_id";
     private ViewPager mViewPager;
@@ -28,12 +28,13 @@ public class BookPagerActivity extends AppCompatActivity { // ШАГ 2: extends 
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_book_pager);
 
-        // Скрываем тулбар на этом экране (детали книги)
-        if (getSupportActionBar() != null) {
-            getSupportActionBar().hide();
+        // ===== ВАРИАНТ 1: ПОКАЗЫВАЕМ ТУЛБАР (комментируем hide) =====
+        // if (getSupportActionBar() != null) {
+        //     getSupportActionBar().hide();  // ЗАКОММЕНТИРУЙТЕ ЭТУ СТРОКУ
+        // }
+        // ============================================================
 
-        // ... остальной код (ViewPager, адаптер и т.д.)
-    }
+        // ИЛИ ВАРИАНТ 2: ПОЛНОСТЬЮ УБЕРИТЕ ЭТОТ БЛОК КОДА
 
         UUID bookId = (UUID) getIntent().getSerializableExtra(EXTRA_BOOK_ID);
         mViewPager = findViewById(R.id.activity_book_pager_view_pager);

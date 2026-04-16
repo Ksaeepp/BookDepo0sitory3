@@ -3,6 +3,7 @@ package ru.kurepin.bookdepository;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 import java.util.UUID;
 
@@ -18,9 +19,9 @@ public class BookActivity extends SingleFragmentActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        // Скрываем системный тулбар (ActionBar), чтобы не мешал
+        // ПОКАЗЫВАЕМ ТУЛБАР (если он был скрыт в родительском классе)
         if (getSupportActionBar() != null) {
-            getSupportActionBar().hide();
+            getSupportActionBar().show();
         }
     }
 
