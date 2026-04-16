@@ -12,5 +12,5 @@
     <string name="book_report_unreaded">Книга не прочитана</string>
     <string name="book_report_subject">BookDepository: отчёт о прочтении</string>
     <string name="send_report">Отправить отчёт о прочтении через</string>
-
+    <string name="book_web_text">Открыть книгу в браузере</string>
 </resources>

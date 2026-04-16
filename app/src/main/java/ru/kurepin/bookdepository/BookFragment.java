@@ -2,6 +2,7 @@ package ru.kurepin.bookdepository;
 
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.net.Uri;  // ДОБАВЬТЕ ЭТОТ ИМПОРТ
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
@@ -34,7 +35,8 @@ public class BookFragment extends Fragment {
     private CheckBox mReadedCheckBox;
     private TextView mDateTextView;
     private Button mDateButton;
-    private Button mReportButton; // Кнопка для отправки отчёта
+    private Button mReportButton;
+    private Button mWebButton;  // НОВОЕ ПОЛЕ для кнопки браузера
 
     public static BookFragment newInstance(UUID bookId) {
         Bundle args = new Bundle();
@@ -53,24 +55,12 @@ public class BookFragment extends Fragment {
         mBook = BookLab.get(getActivity()).getBook(bookId);
     }
 
-    /**
-     * Обновляет отображение даты в TextView
-     * Использует android.text.format.DateFormat для форматирования даты
-     */
     private void updateDate() {
         String dateString = DateFormat.getDateFormat(getActivity()).format(mBook.getDate());
         mDateTextView.setText(dateString);
     }
 
-    // ==================== ШАГ 4: Метод getBookReport() ====================
-    /**
-     * Формирует текстовый отчёт о книге для отправки через неявный Intent
-     * Использует форматную строку с заполнителями из strings.xml
-     *
-     * @return String - отформатированный текст отчёта
-     */
     private String getBookReport() {
-        // Определяем статус прочтения
         String readedString;
         if (mBook.isReaded()) {
             readedString = getString(R.string.book_report_readed);
@@ -78,18 +68,12 @@ public class BookFragment extends Fragment {
             readedString = getString(R.string.book_report_unreaded);
         }
 
-        // Форматируем дату
         String dateString = DateFormat.getDateFormat(getActivity()).format(mBook.getDate());
-
-        // Формируем отчёт с использованием форматной строки
         String report = getString(R.string.book_report,
-                mBook.getTitle(),   // %1$s - название книги
-                dateString,        // %2$s - дата
-                readedString);     // %3$s - статус прочтения
+                mBook.getTitle(), dateString, readedString);
 
         return report;
     }
-    // ==================== КОНЕЦ ШАГА 4 ====================
 
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
@@ -105,28 +89,21 @@ public class BookFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View v = inflater.inflate(R.layout.fragment_book, container, false);
 
-        // Инициализация поля для ввода названия книги
+        // Инициализация полей
         mTitleField = v.findViewById(R.id.book_title);
         mTitleField.setText(mBook.getTitle());
         mTitleField.addTextChangedListener(new TextWatcher() {
-            @Override
-            public void beforeTextChanged(CharSequence s, int start, int count, int after) {}
-
-            @Override
-            public void onTextChanged(CharSequence s, int start, int before, int count) {
+            @Override public void beforeTextChanged(CharSequence s, int start, int count, int after) {}
+            @Override public void onTextChanged(CharSequence s, int start, int before, int count) {
                 mBook.setTitle(s.toString());
             }
-
-            @Override
-            public void afterTextChanged(Editable s) {}
+            @Override public void afterTextChanged(Editable s) {}
         });
 
-        // Инициализация кнопки и текстового поля для даты
         mDateButton = v.findViewById(R.id.book_date_button);
         mDateTextView = v.findViewById(R.id.book_date);
         updateDate();
 
-        // Обработчик нажатия на кнопку выбора даты
         mDateButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -137,7 +114,6 @@ public class BookFragment extends Fragment {
             }
         });
 
-        // Инициализация CheckBox для статуса прочтения
         mReadedCheckBox = v.findViewById(R.id.book_readed);
         mReadedCheckBox.setChecked(mBook.isReaded());
         mReadedCheckBox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
@@ -147,7 +123,45 @@ public class BookFragment extends Fragment {
             }
         });
 
-        // Кнопка возврата назад
+
+        mWebButton = v.findViewById(R.id.book_web);
+        mWebButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                String bookTitle = mBook.getTitle();
+                String encodedTitle = Uri.encode(bookTitle);
+                Uri webPage = Uri.parse("https://www.google.com/search?q=" + encodedTitle);
+                Intent intent = new Intent(Intent.ACTION_VIEW, webPage);
+
+
+                startActivity(intent);
+            }
+        });
+
+        mReportButton = v.findViewById(R.id.book_report);
+        mReportButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(Intent.ACTION_SEND);
+                intent.setType("text/plain");
+                intent.putExtra(Intent.EXTRA_TEXT, getBookReport());
+                intent.putExtra(Intent.EXTRA_SUBJECT,
+                        getString(R.string.book_report_subject));
+
+                PackageManager packageManager = getActivity().getPackageManager();
+                if (intent.resolveActivity(packageManager) != null) {
+                    Intent chooserIntent = Intent.createChooser(intent,
+                            getString(R.string.send_report));
+                    startActivity(chooserIntent);
+                } else {
+                    Toast.makeText(getActivity(),
+                            "Нет приложений для отправки сообщений",
+                            Toast.LENGTH_SHORT).show();
+                }
+            }
+        });
+
+        // Кнопка назад
         Button backButton = v.findViewById(R.id.back_button);
         backButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -155,43 +169,6 @@ public class BookFragment extends Fragment {
                 getActivity().onBackPressed();
             }
         });
-
-
-        mReportButton = v.findViewById(R.id.book_report);
-
-
-        mReportButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-
-                Intent intent = new Intent(Intent.ACTION_SEND);
-
-                intent.setType("text/plain");
-
-                intent.putExtra(Intent.EXTRA_TEXT, getBookReport());
-
-                intent.putExtra(Intent.EXTRA_SUBJECT,
-                        getString(R.string.book_report_subject));
-
-
-                PackageManager packageManager = getActivity().getPackageManager();
-
-
-                if (intent.resolveActivity(packageManager) != null) {
-
-                    Intent chooserIntent = Intent.createChooser(intent,
-                            getString(R.string.send_report));
-
-                    startActivity(chooserIntent);
-                } else {
-                    Toast.makeText(getActivity(),
-                            "Нет приложений для отправки сообщений",
-                            Toast.LENGTH_SHORT).show();
-                }
-
-            }
-        });
-
 
         return v;
     }
@@ -212,7 +189,6 @@ public class BookFragment extends Fragment {
         return super.onOptionsItemSelected(item);
     }
 
-    // Сохранение изменений при уходе с экрана
     @Override
     public void onPause() {
         super.onPause();
