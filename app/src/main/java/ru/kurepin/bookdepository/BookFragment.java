@@ -5,6 +5,9 @@ import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
@@ -18,9 +21,7 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Locale;
 import java.util.UUID;
-import android.view.Menu;
-import android.view.MenuInflater;
-import android.view.MenuItem;
+
 public class BookFragment extends Fragment {
 
     private static final String ARG_BOOK_ID = "book_id";
@@ -41,6 +42,7 @@ public class BookFragment extends Fragment {
         return fragment;
     }
 
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -54,7 +56,6 @@ public class BookFragment extends Fragment {
         SimpleDateFormat sdf = new SimpleDateFormat("dd.MM.yyyy", Locale.getDefault());
         mDateTextView.setText(sdf.format(mBook.getDate()));
     }
-
 
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
@@ -82,7 +83,7 @@ public class BookFragment extends Fragment {
 
         mDateButton = v.findViewById(R.id.book_date_button);
         mDateTextView = v.findViewById(R.id.book_date);
-        updateDate(); // вызов метода из шага 13
+        updateDate();
 
         mDateButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -114,11 +115,13 @@ public class BookFragment extends Fragment {
         return v;
     }
 
+
     @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
         super.onCreateOptionsMenu(menu, inflater);
         inflater.inflate(R.menu.fragment_book, menu);
     }
+
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
@@ -129,10 +132,12 @@ public class BookFragment extends Fragment {
         }
         return super.onOptionsItemSelected(item);
     }
+
+
+    // Сохранение изменений при уходе с экрана (обязательно для обновления БД)
     @Override
     public void onPause() {
         super.onPause();
         BookLab.get(getActivity()).updateBook(mBook);
     }
-
 }
