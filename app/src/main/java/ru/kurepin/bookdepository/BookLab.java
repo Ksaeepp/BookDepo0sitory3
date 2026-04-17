@@ -4,6 +4,9 @@ import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
+import android.os.Environment;
+
+import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
@@ -97,5 +100,12 @@ public class BookLab {
         values.put(BookTable.Cols.DATE, book.getDate().getTime());
         values.put(BookTable.Cols.READED, book.isReaded() ? 1 : 0);
         return values;
+    }
+    public File getPhotoFile(Book book) {
+        File externalFilesDir = mContext.getExternalFilesDir(Environment.DIRECTORY_PICTURES);
+        if (externalFilesDir == null) {
+            return null;
+        }
+        return new File(externalFilesDir, book.getPhotoFilename());
     }
 }

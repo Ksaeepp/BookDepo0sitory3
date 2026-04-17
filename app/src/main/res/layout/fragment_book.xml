@@ -1,97 +1,94 @@
 <?xml version="1.0" encoding="utf-8"?>
-<ScrollView
+<LinearLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:paddingTop="120dp"
-    android:clipToPadding="false">
+    android:orientation="vertical">
 
-    <LinearLayout
+    <!-- Отступ под тулбар -->
+    <Space
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="vertical"
-        android:padding="16dp">
+        android:layout_height="?attr/actionBarSize" />
 
-        <!-- Поле для ввода названия книги -->
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Название книги:"
-            android:textSize="14sp"
-            android:textColor="@android:color/darker_gray"/>
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:paddingTop="120dp"
+        android:clipToPadding="false">
 
-        <EditText
-            android:id="@+id/book_title"
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:hint="Введите название книги"
-            android:textSize="18sp"
-            android:layout_marginBottom="16dp"/>
+            android:orientation="vertical"
+            android:padding="16dp">
 
-        <!-- Дата добавления -->
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Дата добавления:"
-            android:textSize="14sp"
-            android:textColor="@android:color/darker_gray"/>
+            <!-- Включаем макет с камерой и названием -->
+            <include layout="@layout/view_camera_and_title"/>
 
-        <TextView
-            android:id="@+id/book_date"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="01.01.2024"
-            android:textSize="16sp"
-            android:padding="12dp"
-            android:background="@android:drawable/editbox_background"
-            android:layout_marginBottom="8dp"/>
+            <!-- Дата добавления -->
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Дата добавления:"
+                android:textSize="14sp"
+                android:textColor="@android:color/darker_gray"
+                android:layout_marginTop="16dp"/>
 
-        <!-- Кнопка выбора даты -->
+            <TextView
+                android:id="@+id/book_date"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="01.01.2024"
+                android:textSize="16sp"
+                android:padding="12dp"
+                android:background="@android:drawable/editbox_background"
+                android:layout_marginBottom="8dp"/>
 
-        <!-- Чекбокс прочтения -->
-        <Button
-            android:id="@+id/book_date_button"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="16dp"
-            android:text="Выбрать дату" />
+            <Button
+                android:id="@+id/book_date_button"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Выбрать дату"
+                android:layout_marginBottom="16dp"/>
 
-        <CheckBox
-            android:id="@+id/book_readed"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Прочитана"
-            android:textSize="16sp"
-            android:layout_marginBottom="16dp"/>
+            <!-- Статус прочтения -->
+            <CheckBox
+                android:id="@+id/book_readed"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Прочитана"
+                android:textSize="16sp"
+                android:layout_marginBottom="16dp"/>
 
-        <!-- Кнопка "ОТКРЫТЬ КНИГУ В БРАУЗЕРЕ" -->
-        <Button
-            android:id="@+id/book_web"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="@string/book_web_text"
-            android:drawableLeft="@android:drawable/ic_menu_view"
-            android:padding="12dp"
-            android:layout_marginBottom="8dp"/>
+            <!-- Кнопка "Открыть книгу в браузере" -->
+            <Button
+                android:id="@+id/book_web"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/book_web_text"
+                android:drawableLeft="@android:drawable/ic_menu_view"
+                android:padding="12dp"
+                android:layout_marginBottom="8dp"/>
 
-        <!-- Кнопка отправки отчёта -->
-        <Button
-            android:id="@+id/book_report"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="@string/book_report_text"
-            android:drawableLeft="@android:drawable/ic_menu_send"
-            android:padding="12dp"
-            android:layout_marginBottom="8dp"/>
+            <!-- Кнопка отправки отчёта -->
+            <Button
+                android:id="@+id/book_report"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/book_report_text"
+                android:drawableLeft="@android:drawable/ic_menu_send"
+                android:padding="12dp"
+                android:layout_marginBottom="8dp"/>
 
-        <!-- Кнопка назад -->
-        <Button
-            android:id="@+id/back_button"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="Назад"
-            android:drawableLeft="@android:drawable/ic_menu_revert"
-            android:padding="12dp"/>
+            <!-- Кнопка назад -->
+            <Button
+                android:id="@+id/back_button"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Назад"
+                android:drawableLeft="@android:drawable/ic_menu_revert"
+                android:padding="12dp"/>
 
-    </LinearLayout>
-</ScrollView>
+        </LinearLayout>
+    </ScrollView>
+</LinearLayout>

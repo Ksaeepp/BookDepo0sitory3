@@ -2,6 +2,25 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="ru.kurepin.bookdepository">
 
+    <!-- ==================== РАЗРЕШЕНИЯ ==================== -->
+    <!-- Разрешение на использование камеры -->
+    <uses-permission android:name="android.permission.CAMERA" />
+
+    <!-- Разрешение на запись во внешнее хранилище (для сохранения фото) -->
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"
+        android:maxSdkVersion="28" />
+
+    <!-- Разрешение на чтение внешнего хранилища -->
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+    <!-- =================================================== -->
+
+    <!-- ==================== ОБЪЯВЛЕНИЕ ИСПОЛЬЗОВАНИЯ КАМЕРЫ ==================== -->
+    <!-- required="false" означает, что приложение может работать без камеры -->
+    <uses-feature
+        android:name="android.hardware.camera"
+        android:required="false" />
+    <!-- ======================================================================== -->
+
     <application
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
@@ -20,15 +39,28 @@
             </intent-filter>
         </activity>
 
-        <!-- ========== ШАГ 9: ВКЛЮЧЕНИЕ КНОПКИ UP ==========
-             Атрибут parentActivityName указывает, какая активность является родительской.
-             При нажатии кнопки Up (стрелка влево на панели инструментов) система
-             откроет BookListActivity, обеспечивая иерархическую навигацию.
-        -->
+        <!-- Активность для пролистывания книг -->
         <activity
             android:name=".BookPagerActivity"
             android:label="@string/app_name"
             android:parentActivityName=".BookListActivity" />
 
+        <!-- Активность для редактирования книги -->
+        <activity
+            android:name=".BookActivity"
+            android:parentActivityName=".BookListActivity" />
+
+        <!-- FileProvider для работы с камерой на Android 7.0+ -->
+        <provider
+            android:name="androidx.core.content.FileProvider"
+            android:authorities="${applicationId}.provider"
+            android:exported="false"
+            android:grantUriPermissions="true">
+            <meta-data
+                android:name="android.support.FILE_PROVIDER_PATHS"
+                android:resource="@xml/provider_paths" />
+        </provider>
+
     </application>
+
 </manifest>

@@ -13,4 +13,7 @@
     <string name="book_report_subject">BookDepository: отчёт о прочтении</string>
     <string name="send_report">Отправить отчёт о прочтении через</string>
     <string name="book_web_text">Открыть книгу в браузере</string>
+    <string name="book_title_label">Название книги</string>
+    <string name="book_title_hint">Введите название книги</string>
+    <string name="full_photo_title">Обложка книги</string>
 </resources>
